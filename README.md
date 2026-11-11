@@ -34,21 +34,23 @@ It is set to have a dead zone of (0.5, 0.61), and hard limits at (0.6, 0.67).
 
 ![The second camera's example execution](Media/task1_camera2.gif)
 
-This second camera is a bit more aggressive: it has a smaller dead zone of (0.23, 0.22) and hard limits at (0.59, 0.39) with a slight X offset of 0.46.
+This second camera is a bit more aggressive: it has a smaller dead zone of (0.23, 0.22) and hard limits at (0.59, 0.39) with a slight X offset of 0.46. To switch between the cameras I simply adjust their priorities in the inspector.
 
 ## Task 2
 
 > Define a confinement area for each of the two cameras of the previous task. Test the execution with its corresponding animated GIF that allows us to see the differences.
 
-![A screenshot of the scene with the new confinement areas](Media/task2_scene.png)
+![A screenshot of the scene with the new confinement areas](Media/task2_bounds.png)
 
-For this task I defined a box collider that spans the entire green section for the first camera:
+For this task I defined a box collider that spans the entire green section for the first camera, so that it doesn't enter neither the snow nor the desert regions:
 
 ![An execution showing the first camera's bounds](Media/task2_camera1.gif)
 
-For the second camera, I set up a polygon collider covering the map bounds. 
+For the second camera, I set up a polygon collider covering the map bounds, which allows the camera to move freely inbetween sections:
 
 ![An execution showing the second camera's bounds](Media/task2_camera2.gif)
+
+Note how the second camera tries to avoid showing the outside as much as possible. When it can't, it snaps to a new position very rapidly.
 
 Both colliders were set to triggers so that they do not affect the dynamic objects in the scene.
 
@@ -56,6 +58,59 @@ Both colliders were set to triggers so that they do not affect the dynamic objec
 
 > Add various moving sprites in the scene (at least 3). Add an additional camera that follows all of them.
 > Add two additional moving sprites. Add another camera that follows them, but with different importance weights.
+
+![A screenshot of the scene with the new objects](Media/task3_scene.png)
+
+For this task I created a new [`BackAndForthObject`](Assets/Resources/Scripts/BackAndForthObject.cs) script that simply describes a movement around a starting position using sinusoidal functions:
+
+```c#
+using Unity.Mathematics;
+using UnityEngine;
+
+public class BackAndForthObject : MonoBehaviour
+{
+    public float speedX = 1.0f;
+    public float offX = 10f;
+    public float speedY = 1.0f;
+    public float offY = 10f;
+
+    private Vector2 pivot;
+    private float phaseX = 0.0f;
+    private float phaseY = 0.0f;
+
+    void Start()
+    {
+        pivot = transform.position;
+    }
+
+    void Update()
+    {
+        phaseX += Time.deltaTime * speedX;
+        phaseY += Time.deltaTime * speedY;
+        Vector2 offset = new(
+            offX * math.cos(phaseX), 
+            offY * math.sin(phaseY)
+        );
+        transform.position = pivot + offset;
+    }
+}
+```
+
+The first new camera follows the first three objects. They all have the same weight, so the camera tries to adjust itself equally based on their positions:
+
+![The scene with the first new camera following three objects](Media/task3_camera3.gif)
+
+This is achieved using an empty object with the `Cinemachine Target Group` component. Each of the three new objects have their weights set to 1:
+
+![A screenshot of the inspector showing the TargetGroup1 object](Media/task3_targetgroup1.png)
+
+The second new camera follows the three objects, plus two more. The two new objects have bigger weights, so the camera focuses more on them:
+
+![The scene with the second new camera following the objects](Media/task3_camera4.gif)
+
+A new `Cinemachine Target Group` was needed for this extra camera. The fourth object has a weight of 2, and the fifth object has a weight of 3:
+
+![A screenshot of the inspector showing the TargetGroup2 object](Media/task3_targetgroup2.png)
 
 ## Task 4
 
