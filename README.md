@@ -164,7 +164,53 @@ Instead of using `W` and `S`, this script uses `Q` and `E`. The zoom values are 
 > Select a set of keys that may allow you to change between two cameras (enabling/disabling the virtual camera's gameObject).
 > Implement a UI that includes some element to select which camera gets activated.
 
+![The scene with the camera dropdown in action](Media/task5_scene.gif)
 
+For this combined task, I added an [`ActiveCamManager`](Assets/Resources/Scripts/ActiveCamManager.cs) to the Main Camera:
+
+```c#
+using UnityEngine;
+using Unity.Cinemachine;
+
+public class CamManager : MonoBehaviour
+{
+    public CinemachineCamera[] cams;
+    public int activeIdx = 0;
+
+    void Start()
+    {
+        if (cams == null) {
+            Debug.LogError("CamManager: cams is null!");
+            return;
+        }
+        for (int i = 0; i < cams.Length; i++) {
+            var cam = cams[i];
+            if (cam == null) { Debug.LogError("Cam " + i + " is null!"); }            
+        }
+        SetActiveCam(activeIdx);
+    }
+
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.Alpha0)) {
+            SetActiveCam(0);
+        } else if (Input.GetKey(KeyCode.Alpha3)) {
+            SetActiveCam(3);
+        }
+    }
+
+    public void SetActiveCam(int index) {
+        activeIdx = index;
+        for (int i = 0; i < cams.Length; i++) {
+            cams[i].gameObject.SetActive(i == index);
+        }
+    }
+}
+```
+
+It contains a public array of the cameras we want to enable/disable. When we want the camera to change, we can call `SetActiveCam` with the corresponding camera's index. As an example, I added the checks for the `0` and `3` keys to `Update`. Finally, the UI camera dropdown's `OnValueChanged` event is set up to call our `SetActiveCam`:
+
+![A screenshot of the inspector showing the OnValueChanged event](Media/task5_dropdownevent.png)
 
 ## Task 6
 
