@@ -41,7 +41,13 @@ public class CamManager : MonoBehaviour
     public void SetActiveCam(int index) {
         activeIdx = index;
         for (int i = 0; i < cams.Length; i++) {
-            cams[i].gameObject.SetActive(i == index);
+            cams[i].Priority = (i == index ? 5000 : 0);
         }
+    }
+
+    public CinemachineCamera GetCamera(int index)
+    {
+        if (index >= cams.Length) { return null; }
+        return cams[index];
     }
 }

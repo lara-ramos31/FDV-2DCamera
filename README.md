@@ -232,7 +232,7 @@ public void SetGameSpeed(float timeScale)
 }
 ```
 
-This method is meant to be accessed via a new [`TimeScaleTrigger`](Assets/Resources/Scripts/TimeScaleTrigger.cs) script, which is assigned to the new trigger objects in the scene:
+This method is meant to be accessed via a new [`TimeScaleTrigger`](Assets/Resources/Scripts/Triggers/TimeScaleTrigger.cs) script, which is assigned to the new trigger objects in the scene:
 
 ```c#
 using UnityEngine;
@@ -259,8 +259,43 @@ public class TimeScaleTrigger : MonoBehaviour
 }
 ```
 
-The same script is used for both slow and fast motion. When a player enters the trigger zone, the game's speed is changed accordingly.
+The same script is used for both slow (yellow) and fast (cyan) motion. When a player enters the trigger zone, the game's speed is changed accordingly.
 
 ## Task 7
 
 > Create a script to exchange the active camera: one will be confined and the other won't. When the character collides with a scene element, the exchange is performed.
+
+![The scene with the new camera switching changes](Media/task7_scene.gif)
+
+This task is even simpler. I added a new [`CamChangeTrigger`](Assets/Resources/Scripts/Triggers/CamChangeTrigger.cs) whose only job is to switch the priorities of the two cameras it is assigned when the player enters or exits a given area:
+
+```c#
+using Unity.Cinemachine;
+using UnityEngine;
+
+[RequireComponent (typeof(Collider2D))]
+public class CamChangeTrigger : MonoBehaviour
+{
+    public CinemachineCamera cam1, cam2;
+    public const int activePriority = 5000;
+    public const int inactivePriority = 0;
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == 0) { // player
+            cam1.Priority = inactivePriority;
+            cam2.Priority = activePriority;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.layer == 0) { // player
+            cam1.Priority = activePriority;
+            cam2.Priority = inactivePriority;
+        }
+    }
+}
+```
+
+Note that this trigger's collider is set to cover the entire sky section of the scene.
