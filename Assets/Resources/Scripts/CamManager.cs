@@ -5,6 +5,7 @@ public class CamManager : MonoBehaviour
 {
     public CinemachineCamera[] cams;
     public int activeIdx = 0;
+    public int timeCamIdx = 0;
 
     void Start()
     {
@@ -25,6 +26,15 @@ public class CamManager : MonoBehaviour
             SetActiveCam(0);
         } else if (Input.GetKey(KeyCode.Alpha3)) {
             SetActiveCam(3);
+        }
+    }
+
+    public void SetGameSpeed(float timeScale)
+    {
+        Time.timeScale = timeScale;
+        if (timeScale != 1.0f)
+        {
+            SetActiveCam(timeCamIdx);
         }
     }
 

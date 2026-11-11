@@ -166,7 +166,7 @@ Instead of using `W` and `S`, this script uses `Q` and `E`. The zoom values are 
 
 ![The scene with the camera dropdown in action](Media/task5_scene.gif)
 
-For this combined task, I added an [`ActiveCamManager`](Assets/Resources/Scripts/ActiveCamManager.cs) to the Main Camera:
+For this combined task, I added a [`CamManager`](Assets/Resources/Scripts/CamManager.cs) script to the Main Camera:
 
 ```c#
 using UnityEngine;
@@ -216,6 +216,50 @@ It contains a public array of the cameras we want to enable/disable. When we wan
 
 > Create a script to enable the slow motion camera whenever the character collides with a scene element of your choosing to enable this property.
 > Create a script to enable the fast motion camera whenever the character collides with a scene element of your choosing to enable this property.
+
+![The scene with the new slow/fast motion additions](Media/task6_scene.gif)
+
+For this task, I modified the `CamManager` script to include a public method that changes the game's `timeScale`, setting the camera to a special configurable index if we want to trigger a certain virtual camera upon changing it:
+
+```c#
+public void SetGameSpeed(float timeScale)
+{
+    Time.timeScale = timeScale;
+    if (timeScale != 1.0f)
+    {
+        SetActiveCam(timeCamIdx);
+    }
+}
+```
+
+This method is meant to be accessed via a new [`TimeScaleTrigger`](Assets/Resources/Scripts/TimeScaleTrigger.cs) script, which is assigned to the new trigger objects in the scene:
+
+```c#
+using UnityEngine;
+
+[RequireComponent (typeof(Collider2D))]
+public class TimeScaleTrigger : MonoBehaviour
+{
+    public CamManager camManager;
+    public bool isSlowMo = false;
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == 0) { // player
+            camManager.SetGameSpeed(isSlowMo ? 0.5f : 2.0f);
+        } 
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.layer == 0) { // player
+            camManager.SetGameSpeed(1.0f);
+        }
+    }
+}
+```
+
+The same script is used for both slow and fast motion. When a player enters the trigger zone, the game's speed is changed accordingly.
 
 ## Task 7
 
