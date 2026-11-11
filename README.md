@@ -116,10 +116,55 @@ A new `Cinemachine Target Group` was needed for this extra camera. The fourth ob
 
 > Implement a zoom effect for the player camera that is controlled with the `W` and `S` keys.
 
+![The scene with the zoomable camera](Media/task4_scene.gif)
+
+This task is quite simple. I added a new [`ZoomCamera`](Assets/Resources/Scripts/ZoomCamera.cs) script that is meant fo be added to the `CinemachineCamera` objects in the scene:
+
+```c#
+using UnityEngine;
+using Unity.Cinemachine;
+using Unity.Mathematics;
+
+[RequireComponent (typeof(CinemachineCamera))]
+public class ZoomCamera : MonoBehaviour
+{
+    public const float minZoom = 5;
+    public const float maxZoom = 10;
+    public float zoomSpeed = 1.0f;
+
+    private CinemachineCamera cam;
+
+    void Start()
+    {
+        cam = GetComponent<CinemachineCamera>();
+    }
+
+    void Update()
+    {
+        if (!cam.isActiveAndEnabled) { return; }
+        float zoom = 0.0f;
+        if (Input.GetKey(KeyCode.Q)) {
+            zoom += zoomSpeed * Time.deltaTime;
+        } else if (Input.GetKey(KeyCode.E)) {
+            zoom -= zoomSpeed * Time.deltaTime;
+        }
+        cam.Lens.OrthographicSize = math.clamp(
+            cam.Lens.OrthographicSize + zoom,
+            minZoom,
+            maxZoom
+        );
+    }
+}
+```
+
+Instead of using `W` and `S`, this script uses `Q` and `E`. The zoom values are clamped so that elements onscreen don't get too big or too small.
+
 ## Task 5
 
-> Select a set of keys that may allow you to change between two cameras (enabling/disablign the virtual camera's gameObject).
+> Select a set of keys that may allow you to change between two cameras (enabling/disabling the virtual camera's gameObject).
 > Implement a UI that includes some element to select which camera gets activated.
+
+
 
 ## Task 6
 

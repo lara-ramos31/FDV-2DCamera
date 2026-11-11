@@ -38531,6 +38531,7 @@ GameObject:
   - component: {fileID: 383032588}
   - component: {fileID: 383032587}
   - component: {fileID: 383032590}
+  - component: {fileID: 383032591}
   m_Layer: 0
   m_Name: CinemachineCamera2
   m_TagString: Untagged
@@ -38583,7 +38584,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
   Priority:
     Enabled: 1
-    m_Value: 10
+    m_Value: 30
   OutputChannel: 1
   StandbyUpdate: 2
   m_StreamingVersion: 20241001
@@ -38647,6 +38648,19 @@ MonoBehaviour:
     MaxWindowSize: 0
     Padding: 0
   m_LegacyMaxWindowSize: -2
+--- !u!114 &383032591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383032586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd6c0530e8a3dbe39529646b220df90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZoomCamera
+  zoomSpeed: 3
 --- !u!1 &400062218
 GameObject:
   m_ObjectHideFlags: 0
@@ -39145,7 +39159,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 37.295204, y: -2.4053752, z: -10}
+  m_LocalPosition: {x: -1.9735222, y: -0.04442978, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
