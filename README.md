@@ -24,6 +24,18 @@
 
 > Install the Cinemachine package and configure two virtual cameras with different player following zones. Show the effect with an animated GIF.
 
+![The expanded map](Media/task1_map.png)
+
+For this task I expanded a bit the map so that we can properly see the differences in camera settings. The first camera has the following effect:
+
+![The first camera's example execution](Media/task1_camera1.gif)
+
+It is set to have a dead zone of (0.5, 0.61), and hard limits at (0.6, 0.67).
+
+![The second camera's example execution](Media/task1_camera2.gif)
+
+This second camera is a bit more aggressive: it has a smaller dead zone of (0.23, 0.22) and hard limits at (0.59, 0.39) with a slight X offset of 0.46.
+
 ## Task 2
 
 > Define a confinement area for each of the two cameras of the previous task. Test the execution with its corresponding animated GIF that allows us to see the differences.
