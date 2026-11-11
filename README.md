@@ -40,6 +40,18 @@ This second camera is a bit more aggressive: it has a smaller dead zone of (0.23
 
 > Define a confinement area for each of the two cameras of the previous task. Test the execution with its corresponding animated GIF that allows us to see the differences.
 
+![A screenshot of the scene with the new confinement areas](Media/task2_scene.png)
+
+For this task I defined a box collider that spans the entire green section for the first camera:
+
+![An execution showing the first camera's bounds](Media/task2_camera1.gif)
+
+For the second camera, I set up a polygon collider covering the map bounds. 
+
+![An execution showing the second camera's bounds](Media/task2_camera2.gif)
+
+Both colliders were set to triggers so that they do not affect the dynamic objects in the scene.
+
 ## Task 3
 
 > Add various moving sprites in the scene (at least 3). Add an additional camera that follows all of them.
